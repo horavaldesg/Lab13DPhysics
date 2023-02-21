@@ -151,7 +151,16 @@ public class Boid : MonoBehaviour
             // and then set it to the speeed we chose
             velAlign *= spn.velocity;
         }
-
+        //Flock centering out on Y-axis
+        var xCnter = neighborhood.avgXPos;
+        var xLine = Vector3.zero;
+        if(xCnter != 0)
+        {
+            xCnter -= transform.position.y;
+            xLine = Vector3.up * xCnter;
+            xLine.Normalize();
+            xLine *= spn.velocity;
+        }
         //Flock centering - move towards the center of local neighbors
         var velCenter = neighborhood.avgPos;
         if (velCenter != Vector3.zero)
@@ -195,7 +204,14 @@ public class Boid : MonoBehaviour
                 }
             }
         }
-
+        if (velCenter != Vector3.zero)
+        {
+            vel = Vector3.Lerp(vel, velAlign, 1.5f * fdt);
+        }
+        if(xLine != Vector3.zero)
+        {
+            vel = Vector3.Lerp(vel, xLine, 1.5f * fdt);
+        }
         
         //set vel to the velocity set on the spawner singleton
         vel = vel.normalized * spn.velocity;

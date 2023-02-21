@@ -69,6 +69,22 @@ public class Neighborhood : MonoBehaviour
         }
     }
 
+    public float avgXPos
+    {
+        get
+        {
+            var avg = Vector3.zero;
+            if (neighbors.Count == 0) return avg.x;
+
+            avg = neighbors.Aggregate(avg, (current, t) => current + t.pos);
+
+            avg /= neighbors.Count;
+
+            return avg.x;
+
+        }
+    }
+
 
     public Vector3 avgVel
     {
